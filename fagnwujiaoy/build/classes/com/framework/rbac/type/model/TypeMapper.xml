@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.framework.rbac.type.dao.TypeDao">
+<resultMap type="com.framework.rbac.type.model.Type"
+		id="typeMap">
+		<id property="id" column="id" javaType="java.lang.Integer"
+			jdbcType="INTEGER" />
+		<result property="typeName" column="type_name" javaType="java.lang.String"
+			jdbcType="VARCHAR" />
+		<result property="messageId" column="messageId" javaType="java.lang.Integer"
+			jdbcType="INTEGER" />
+		<result property="name" column="name" javaType="java.lang.String"
+			jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<select id="Query" resultMap="typeMap" parameterType="java.util.HashMap">
+	SELECT
+		*
+	FROM
+		type
+	<where>
+		message_id=#{type.messageId}
+	</where>
+	ORDER BY
+		id
+	DESC
+</select>
+<select id="QueryAll" resultMap="typeMap" parameterType="java.util.HashMap">
+	SELECT
+		*
+	FROM
+		type
+	ORDER BY
+		id
+	DESC
+</select>
+<select id="queryOne" resultMap="typeMap">
+	SELECT
+		*
+	FROM
+		type
+	<where>
+		id=#{id}
+	</where>
+</select>
+<select id="queryCount" resultType="int">
+	SELECT
+		COUNT(*)
+	FROM
+		type
+</select>
+
+<insert id="typeAdd">
+
+	INSERT INTO
+		type
+	<trim prefix="(" suffix=")" suffixOverrides=",">
+		<if test="typeName!=null and typeName!=''">
+			type_name,
+		</if>
+		<if test="messageId!=null and messageId!=''">
+			message_id,
+		</if>
+		<if test="name!=null and name!=''">
+			name,
+		</if>
+	</trim>
+	VALUES
+	<trim prefix="(" suffix=")" suffixOverrides=",">
+		<if test="typeName!=null and typeName!=''">
+			#{typeName},
+		</if>
+		<if test="messageId!=null and messageId!=''">
+			#{messageId},
+		</if>
+		<if test="name!=null and name!=''">
+			#{name},
+		</if>
+	</trim>
+	
+</insert>
+
+<delete id="informationDelete" parameterType="int">
+		DELETE
+		FROM
+			type
+		WHERE
+			id=#{id}
+</delete>
+
+<update id="informationUpdate" parameterType="com.framework.rbac.type.model.Type">
+		UPDATE
+		type
+		<set>
+			<if test="typeName!=null and typeName!=''">
+			type_name=#{typeName},
+		</if>
+		<if test="messageId!=null and messageId!=''">
+			message_id=#{messageId},
+		</if>
+		<if test="name!=null and name!=''">
+			name=#{name},
+		</if>
+		</set>
+		WHERE id=#{id}
+</update>
+</mapper>

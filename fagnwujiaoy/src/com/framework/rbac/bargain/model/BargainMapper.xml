@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.framework.rbac.bargain.dao.BargainDao">
+	<resultMap type="com.framework.rbac.bargain.model.Bargain"
+		id="bargainMap">
+		<id property="id" column="id" javaType="java.lang.Integer"
+			jdbcType="INTEGER" />
+		<result property="goodName" column="good_name" javaType="java.lang.String"
+			jdbcType="VARCHAR" />
+		<result property="goodPrice" column="good_price" javaType="java.lang.String"
+			jdbcType="VARCHAR" />
+		<result property="goodType" column="good_type" javaType="java.lang.String"
+			jdbcType="VARCHAR" />
+		<result property="customName" column="custom_name" javaType="java.lang.String"
+			jdbcType="VARCHAR" />
+		<result property="customTel" column="custom_tel" javaType="java.lang.String"
+			jdbcType="VARCHAR" />
+		<result property="customAddress" column="custom_address" javaType="java.lang.String"
+			jdbcType="VARCHAR" />
+		<result property="status" column="status" javaType="java.lang.String"
+			jdbcType="VARCHAR" />
+		<result property="goodNumber" column="good_number" javaType="java.lang.Integer"
+			jdbcType="INTEGER" />
+		<result property="goodId" column="good_id" javaType="java.lang.Integer"
+			jdbcType="INTEGER" />
+	</resultMap>
+	
+	<select id="Query" resultMap="bargainMap" parameterType="java.util.HashMap">
+	SELECT
+		*
+	FROM
+		bargain
+	<where>
+		<if test="bargain.goodName!=null and bargain.goodName!=''">
+		good_name=#{bargain.goodName}
+		</if>
+		<if test="bargain.goodPrice!=null and bargain.goodPrice!=''">
+		AND good_price=#{bargain.goodPrice}
+		</if>
+		<if test="bargain.goodType!=null and bargain.goodType!=''">
+		AND good_type=#{bargain.goodType}
+		</if>
+		AND custom_name=#{bargain.customName}
+		<if test="bargain.status!=null and bargain.status!=''">
+		AND status=#{bargain.status}
+		</if>
+		
+	</where>
+	LIMIT 
+	#{pager.offSet},#{pager.pageSize}
+</select>
+<select id="queryCount" resultType="int">
+	SELECT
+		COUNT(*)
+	FROM
+		bargain
+	<where>
+		<if test="bargain.goodName!=null and bargain.goodName!=''">
+		goodName=#{bargain.goodName}
+		</if>
+		<if test="bargain.goodPrice!=null and bargain.goodPrice!=''">
+		AND goodPrice=#{bargain.goodPrice}
+		</if>
+		<if test="bargain.goodType!=null and bargain.goodType!=''">
+		AND goodType=#{bargain.goodType}
+		</if>
+		<if test="bargain.customName!=null and bargain.customName!=''">
+		AND custom_name=#{bargain.customName}
+		</if>
+	</where>
+</select>
+
+<insert id="bargainAdd">
+
+	INSERT INTO
+		bargain
+	<trim prefix="(" suffix=")" suffixOverrides=",">
+		<if test="goodName!=null and goodName!=''">
+			good_name,
+		</if>
+		<if test="goodPrice!=null and goodPrice!=''">
+			good_price,
+		</if>
+		<if test="goodType!=null and goodType!=''">
+			good_type,
+		</if>
+		<if test="customName!=null and customName!=''">
+			custom_name,
+		</if>
+		<if test="customTel!=null and customTel!=''">
+			custom_tel,
+		</if>
+		<if test="customAddress!=null and customAddress!=''">
+			custom_address,
+		</if>
+		<if test="status!=null and status!=''">
+			status,
+		</if>
+		<if test="goodNumber!=null and goodNumber!=''">
+			good_number,
+		</if>
+		<if test="goodId!=null and goodId!=''">
+			good_id,
+		</if>
+	</trim>
+	VALUES
+	<trim prefix="(" suffix=")" suffixOverrides=",">
+		<if test="goodName!=null and goodName!=''">
+			#{goodName},
+		</if>
+		<if test="goodPrice!=null and goodPrice!=''">
+			#{goodPrice},
+		</if>
+		<if test="goodType!=null and goodType!=''">
+			#{goodType},
+		</if>
+		<if test="customName!=null and customName!=''">
+			#{customName},
+		</if>
+		<if test="customTel!=null and customTel!=''">
+			#{customTel},
+		</if>
+		<if test="customAddress!=null and customAddress!=''">
+			#{customAddress},
+		</if>
+		<if test="status!=null and status!=''">
+			#{status},
+		</if>
+		<if test="goodNumber!=null and goodNumber!=''">
+			#{goodNumber},
+		</if>
+		<if test="goodId!=null and goodId!=''">
+			#{goodId},
+		</if>
+	</trim>
+	
+</insert>
+
+<delete id="informationDelete" parameterType="int">
+		DELETE
+		FROM
+			bargain
+		WHERE
+			id=#{id}
+</delete>
+
+<update id="informationUpdate" parameterType="com.framework.rbac.bargain.model.Bargain">
+		UPDATE
+		bargain
+		<set>
+			<if test="goodName!=null">
+				good_name=#{goodName},
+			</if>
+			<if test="goodPrice!=null">
+				good_price=#{goodPrice},
+			</if>
+			<if test="goodType!=null">
+				good_type=#{goodType},
+			</if>
+			<if test="customName!=null">
+				custom_name=#{customName},
+			</if>
+			<if test="customTel!=null">
+				custom_tel=#{customTel},
+			</if>
+			<if test="customAddress!=null">
+				custom_address=#{customAddress},
+			</if>
+			<if test="goodNumber!=null">
+				good_number=#{goodNumber},
+			</if>
+			<if test="goodId!=null">
+				good_id=#{goodId},
+			</if>
+			<if test="status!=null">
+				status=#{status},
+			</if>
+		</set>
+		WHERE id=#{id}
+</update>
+
+<update id="Update" parameterType="com.framework.rbac.bargain.model.Bargain">
+		UPDATE
+		bargain
+		<set>
+			<if test="status!=null">
+				status=#{status},
+			</if>
+		</set>
+		WHERE good_id=#{goodId}
+</update>
+</mapper>

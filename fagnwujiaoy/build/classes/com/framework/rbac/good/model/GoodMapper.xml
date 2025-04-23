@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.framework.rbac.good.dao.GoodDao">
+	<resultMap type="com.framework.rbac.good.model.Good"
+		id="goodMap">
+		<id property="id" column="id" javaType="java.lang.Integer"
+			jdbcType="INTEGER" />
+		<result property="goodName" column="good_name" javaType="java.lang.String"
+			jdbcType="VARCHAR" />
+		<result property="goodPrice" column="good_price" javaType="java.lang.String"
+			jdbcType="VARCHAR" />
+		<result property="goodType" column="good_type" javaType="java.lang.String"
+			jdbcType="VARCHAR" />
+		<result property="goodIntroduce" column="good_introduce" javaType="java.lang.String"
+			jdbcType="VARCHAR" />
+		<result property="goodLord" column="good_lord" javaType="java.lang.String"
+			jdbcType="VARCHAR" />
+		<result property="url" column="url" javaType="java.lang.String"
+			jdbcType="VARCHAR" />
+	</resultMap>
+
+<select id="Query" resultMap="goodMap" parameterType="java.util.HashMap">
+	SELECT
+		*
+	FROM
+		good
+	<where>
+		<if test="good.goodName!=null and good.goodName!=''">
+		good_name LIKE CONCAT(CONCAT('%', #{good.goodName}), '%')
+		</if>
+		<if test="good.goodPrice!=null and good.goodPrice!=''">
+		AND good_price LIKE CONCAT(CONCAT('%', #{good.goodPrice}), '%')
+		</if>
+		<if test="good.goodType!=null and good.goodType!=''">
+		AND good_type LIKE CONCAT(CONCAT('%', #{good.goodType}), '%')
+		</if>
+		<if test="good.goodIntroduce!=null and good.goodIntroduce!=''">
+		AND good_introduce LIKE CONCAT(CONCAT('%', #{good.goodIntroduce}), '%')
+		</if>
+		AND status='1'
+	</where>
+	LIMIT 
+	#{pager.offSet},#{pager.pageSize}
+</select>
+<select id="QueryLord" resultMap="goodMap" parameterType="java.util.HashMap">
+	SELECT
+		*
+	FROM
+		good
+	<where>
+		 good_lord=#{goodLord}
+	</where>
+	LIMIT 
+	#{pager.offSet},#{pager.pageSize}
+</select>
+<select id="countLord" resultType="int">
+	SELECT
+		COUNT(*)
+	FROM
+		good
+	<where>
+		<if test="goodLord!=null and goodLord!=''">
+		  good_lord=#{goodLord}
+		</if>
+	</where>
+</select>
+<select id="QueryOne" resultMap="goodMap">
+	SELECT
+		*
+	FROM
+		good
+	<where>
+		id=#{id}
+	</where>
+</select>
+<select id="queryCount" resultType="int">
+	SELECT
+		COUNT(*)
+	FROM
+		good
+	<where>
+		<if test="good.goodName!=null and good.goodName!=''">
+		goodName=#{good.goodName}
+		</if>
+		<if test="good.goodPrice!=null and good.goodPrice!=''">
+		AND goodPrice=#{good.goodPrice}
+		</if>
+		<if test="good.goodType!=null and good.goodType!=''">
+		AND goodType=#{good.goodType}
+		</if>
+		<if test="good.goodIntroduce!=null and good.goodIntroduce!=''">
+		AND goodIntroduce=#{good.goodIntroduce}
+		</if>
+		AND status='1'
+	</where>
+</select>
+
+<insert id="goodAdd">
+
+	INSERT INTO
+		good
+	<trim prefix="(" suffix=")" suffixOverrides=",">
+		<if test="goodName!=null and goodName!=''">
+			good_name,
+		</if>
+		<if test="goodPrice!=null and goodPrice!=''">
+			good_price,
+		</if>
+		<if test="goodType!=null and goodType!=''">
+			good_type,
+		</if>
+		<if test="goodIntroduce!=null and goodIntroduce!=''">
+			good_introduce,
+		</if>
+		<if test="goodLord!=null and goodLord!=''">
+			good_lord,
+		</if>
+		<if test="url!=null and url!=''">
+			url,
+		</if>
+		<if test="status!=null and status!=''">
+			status,
+		</if>
+	</trim>
+	VALUES
+	<trim prefix="(" suffix=")" suffixOverrides=",">
+		<if test="goodName!=null and goodName!=''">
+			#{goodName},
+		</if>
+		<if test="goodPrice!=null and goodPrice!=''">
+			#{goodPrice},
+		</if>
+		<if test="goodType!=null and goodType!=''">
+			#{goodType},
+		</if>
+		<if test="goodIntroduce!=null and goodIntroduce!=''">
+			#{goodIntroduce},
+		</if>
+		<if test="goodLord!=null and goodLord!=''">
+			#{goodLord},
+		</if>
+		<if test="url!=null and url!=''">
+			#{url},
+		</if>
+		<if test="status!=null and status!=''">
+			#{status},
+		</if>
+	</trim>
+	
+</insert>
+
+<delete id="informationDelete" parameterType="int">
+		DELETE
+		FROM
+			good
+		WHERE
+			id=#{id}
+</delete>
+
+<update id="informationUpdate" parameterType="com.framework.rbac.good.model.Good">
+		UPDATE
+		good
+		<set>
+			<if test="goodName!=null">
+				good_name=#{goodName},
+			</if>
+			<if test="goodPrice!=null">
+				good_price=#{goodPrice},
+			</if>
+			<if test="goodType!=null">
+				good_type=#{goodType},
+			</if>
+			<if test="goodIntroduce!=null">
+				good_introduce=#{goodIntroduce},
+			</if>
+			<if test="goodLord!=null">
+				good_lord=#{goodLord},
+			</if>
+			<if test="url!=null and url!=''">
+				url=#{url},
+			</if>
+			<if test="status!=null and status!=''">
+				status=#{status},
+			</if>
+		</set>
+		WHERE id=#{id}
+</update>
+
+
+</mapper>
